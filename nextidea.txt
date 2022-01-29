@@ -1,0 +1,6 @@
+Purchase Servers:
+- Automate purchase of servers based on money available in loop.
+- Stops when reaching max number of servers with max number of ram
+- array of servers pointing always to next slot to fill (empty or lowest ram server)
+
+(problem with spending huge amounts of money when needed for augments)

@@ -1,0 +1,8 @@
+Volhaven:
+	- good university [zb]
+	- 1T RAM servers [omnitek inc.]
+
+Sector-12:
+	- good gym [powerhouse gym]
+	- okay university
+	- cheap servers [alpha ent.]
