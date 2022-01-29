@@ -1,9 +1,11 @@
-var server_list = [];
-var target_servers = [];
-var attack_servers = [];
+import { NS } from '@ns'
+
+let server_list: string[] = [];
+let target_servers: string[] = [];
+let attack_servers: string[] = [];
 
 /** @param {NS} ns **/
-export async function main(ns) {
+export async function main(ns: NS): Promise<void> {
 	// Kill hacking scripts
 	ns.scriptKill('/hack/hack-template.js', 'home');
 	//ns.scriptKill(/!controller/'.js', 'home');
@@ -34,7 +36,7 @@ export async function main(ns) {
 
 
 /** @param {NS} ns **/
-async function runScript(ns, script_name, script_location = script_name) {
+async function runScript(ns: NS, script_name: string, script_location: string = script_name) {
 
 	// Kill script if already running
 	if (ns.scriptRunning(script_name, 'home'))
@@ -49,22 +51,22 @@ async function runScript(ns, script_name, script_location = script_name) {
 
 
 /** @param {NS} ns **/
-async function ReadServers(ns) {
+async function ReadServers(ns: NS): Promise<void> {
+	let aux = "";
 
-	server_list = await ns.read('server_list.txt');
-	server_list = server_list.split(',');
+	aux = await ns.read('server_list.txt');
+	server_list = aux.split(',');
 
-	target_servers = await ns.read('target_servers.txt');
-	target_servers = target_servers.split(',');
+	aux = await ns.read('target_servers.txt');
+	target_servers = aux.split(',');
 
-	attack_servers = await ns.read('attack_servers.txt');
-	attack_servers = attack_servers.split(',');
+	aux = await ns.read('attack_servers.txt');
+	attack_servers = aux.split(',');
 
 }
 
 
 /** @param {NS} ns **/
-async function killAllScripts(ns) {
-
-
+async function killAllScripts(ns: NS): Promise<void> {
+	return;
 }

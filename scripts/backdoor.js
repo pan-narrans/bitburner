@@ -4,7 +4,6 @@ var servers = [];
 /** @param {NS} ns**/
 export async function main(ns) {
 	await ReadServers(ns);
-
 	for (var id in servers) {
 		if (!ns.hasRootAccess(servers[id]))
 			ns.installBackdoor();

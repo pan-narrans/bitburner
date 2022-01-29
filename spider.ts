@@ -1,19 +1,19 @@
 /**
- * Scans for all the servers and writes them onto some files. 
+ * Scans the network and stores the servers into some files.
+ * 
+ * @author Alejandro Pérez
  */
 
-import { General as generalFuncs } from './lib/general.js';
-
+import { NS } from '@ns'
+import { helpers } from 'scripts/lib/general'
 
 // Declare variables
-let server_list = ['home'];
-let target_servers = [];
-let attack_servers = [];
-
-
+let server_list: string[] = ['home'];
+let target_servers: string[] = [];
+let attack_servers: string[] = [];
 
 /** @param {NS} ns **/
-export async function main(ns) {
+export async function main(ns: NS): Promise<void> {
 	// Initialize variables
 	server_list = ['home'];
 	target_servers = [];
@@ -32,7 +32,7 @@ export async function main(ns) {
 		return ns.getServerMaxMoney(a) - ns.getServerMaxMoney(b);
 	});
 
-	// Categorizes servers into target or attack based on money
+	// Categorizes servers into target or attack based on money 
 	await CategorizeServers(ns, server_list);
 
 	// Writes info onto files
@@ -42,6 +42,7 @@ export async function main(ns) {
 
 	await ns.tprint("Spider successfully run.")
 
+	helpers.printArray(ns, server_list);
 	//debug(ns);
 
 }
@@ -50,15 +51,15 @@ export async function main(ns) {
 /**
  * @param {*} ns bitburner stuff
  */
-async function debug(ns) {
+async function debug(ns: NS): Promise<void> {
 	let temp_array;
 
-	/* 
-	const g = new generalFuncs();
-	g.printArray(ns, server_list);
-	g.printArray(ns, attack_servers);
-	g.printArray(ns, target_servers);
-	 */
+
+	helpers.printArray(ns, server_list);
+	helpers.printArray(ns, attack_servers);
+	helpers.printArray(ns, target_servers);
+
+
 
 	temp_array = await ns.read('server_list.txt');
 	ns.tprint("server_list: \n" + temp_array + "\n\n");
@@ -76,12 +77,12 @@ async function debug(ns) {
  * @param {*} target target of the scan command
  * @param {*} origin server from which we call the scan command
  */
-async function ScanServers(ns, target, origin) {
-	var servers = ns.scan(target);
+async function ScanServers(ns: NS, target: string, origin: string): Promise<void> {
+	const servers = ns.scan(target);
 
-	for (var id in servers) {
+	for (const id in servers) {
 		if (servers[id] == origin) {
-			;
+			continue;
 		} else {
 			server_list.push(servers[id]);
 			await ScanServers(ns, servers[id], target);
@@ -99,8 +100,8 @@ async function ScanServers(ns, target, origin) {
  * @param {*} ns bitburner stuff
  * @param {*} servers server array to categorize
  */
-async function CategorizeServers(ns, servers) {
-	for (var id in servers) {
+async function CategorizeServers(ns: NS, servers: string[]): Promise<void> {
+	for (const id in servers) {
 		if (ns.getServerMaxMoney(servers[id]) == 0) {
 			attack_servers.push(servers[id]);
 		} else {

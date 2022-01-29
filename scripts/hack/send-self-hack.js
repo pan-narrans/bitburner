@@ -81,7 +81,7 @@ async function CrackServer(ns, target) {
 			// Calculate threads
 			threads = (threads > 1) ? threads - 1 : 1;
 
-			ns.tprint("Hacking " + target + "... \n");
+			//ns.tprint("Hacking " + target + "... \n");
 			ns.killall(target);
 
 			// Run script on target
