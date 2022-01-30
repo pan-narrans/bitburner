@@ -1,0 +1,2 @@
+# bitburner
+Bitburner game scripts
