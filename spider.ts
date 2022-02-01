@@ -5,7 +5,6 @@
  */
 
 import { NS } from '@ns'
-import { helpers } from 'scripts/lib/general'
 
 // Declare variables
 let server_list: string[] = ['home'];
@@ -40,26 +39,19 @@ export async function main(ns: NS): Promise<void> {
 	await ns.write('attack_servers.txt', attack_servers, 'w');
 	await ns.write('target_servers.txt', target_servers, 'w');
 
-	await ns.tprint("Spider successfully run.")
-
-	helpers.printArray(ns, server_list);
-	//debug(ns);
+	ns.tprint("Spider successfully run.")
 
 }
 
-/** @param {NS} ns **/
 /**
  * @param {*} ns bitburner stuff
  */
 async function debug(ns: NS): Promise<void> {
 	let temp_array;
 
-
-	helpers.printArray(ns, server_list);
-	helpers.printArray(ns, attack_servers);
-	helpers.printArray(ns, target_servers);
-
-
+	ns.tprint(server_list.toString());
+	ns.tprint(attack_servers.toString());
+	ns.tprint(target_servers.toString());
 
 	temp_array = await ns.read('server_list.txt');
 	ns.tprint("server_list: \n" + temp_array + "\n\n");
@@ -69,7 +61,6 @@ async function debug(ns: NS): Promise<void> {
 	ns.tprint("target_servers: \n" + temp_array + "\n\n");
 }
 
-/** @param {NS} ns **/
 /**
  * Recursive funcion scanning the network for all servers
  * 
@@ -91,8 +82,6 @@ async function ScanServers(ns: NS, target: string, origin: string): Promise<void
 
 }
 
-
-/** @param {NS} ns **/
 /**
  * Categorizes servers bases on wether their maxMoney is 0 or not.
  * Servers we can't get money from will be attack servers while the others will be targets.
@@ -106,6 +95,83 @@ async function CategorizeServers(ns: NS, servers: string[]): Promise<void> {
 			attack_servers.push(servers[id]);
 		} else {
 			target_servers.push(servers[id]);
+		}
+	}
+}
+
+/**
+ * Crawls the web and stores the names of the servers it founds.
+ */
+export class Spider {
+	protected static ns: NS;
+	protected static server_list: string[];
+	protected static attack_servers: string[];
+	protected static target_servers: string[];
+
+	constructor(ns: NS) {
+		Spider.ns = ns;
+		Spider.server_list = ["home"];
+		Spider.target_servers = [""];
+		Spider.attack_servers = [""];
+	}
+
+	// GETTERS & SETTERS
+	public async getServerList(): Promise<string[]> {
+		return Spider.server_list;
+	}
+
+	public async getAttackServers(): Promise<string[]> {
+		return Spider.attack_servers;
+	}
+
+	public async getTargetServers(): Promise<string[]> {
+		return Spider.target_servers;
+	}
+
+	/**
+	 * Scans the network and organizes the servers.
+	 */
+	public async scan(): Promise<void> {
+		Spider.server_list = ["home"];
+		Spider.target_servers = [];
+		Spider.attack_servers = [];
+
+		this.scanNework('home', 'home');
+		this.categorizeServers();
+	}
+
+	/**
+	 * Recursive funcion scanning the network for all servers
+	 * 
+	 * @param {*} target target of the scan command
+	 * @param {*} origin server from which we call the scan command
+	 */
+	private scanNework(target: string, origin: string) {
+		const scan_result = Spider.ns.scan(target);
+
+		for (const id in scan_result) {
+			if (scan_result[id] == origin) {
+				continue;
+			} else {
+				Spider.server_list.push(scan_result[id]);
+				void this.scanNework(scan_result[id], target);
+			}
+		}
+	}
+
+	/**
+	 * Categorizes servers bases on wether their maxMoney is 0 or not.
+	 * Servers we can't get money from will be attack servers while the others will be targets.
+	 * 
+	 * @param {*} servers server array to categorize
+	 */
+	private categorizeServers() {
+		for (const id in Spider.server_list) {
+			if (Spider.ns.getServerMaxMoney(Spider.server_list[id]) == 0) {
+				Spider.attack_servers.push(Spider.server_list[id]);
+			} else {
+				Spider.target_servers.push(Spider.server_list[id]);
+			}
 		}
 	}
 }

@@ -1,24 +1,21 @@
 import { NS } from '@ns'
+import { Spider } from 'spider'
 
-let server_list: string[] = [];
-let target_servers: string[] = [];
-let attack_servers: string[] = [];
-
-/** @param {NS} ns **/
 export async function main(ns: NS): Promise<void> {
+
+	/* 
+	const spider = new Spider(ns);
+	void spider.scan(); 
+	*/
+
 	// Kill hacking scripts
-	ns.scriptKill('/hack/hack-template.js', 'home');
-	//ns.scriptKill(/!controller/'.js', 'home');
-	//ns.tprint('allkilled');
+	void killAllScripts(ns);
 
 	// Spider scans servers and writes them into files
 	await runScript(ns, 'spider.js');
 
-	// Reads the files and copies them to variables
-	await ReadServers(ns);
-
 	// Hack sender script
-	await runScript(ns, '/hack/send-self-hack.js');
+	await runScript(ns, 'hack/send-self-hack.js');
 
 	// sell hashes
 	await runScript(ns, 'sell-hashes.js');
@@ -35,7 +32,6 @@ export async function main(ns: NS): Promise<void> {
 }
 
 
-/** @param {NS} ns **/
 async function runScript(ns: NS, script_name: string, script_location: string = script_name) {
 
 	// Kill script if already running
@@ -49,24 +45,15 @@ async function runScript(ns: NS, script_name: string, script_location: string = 
 	await ns.sleep(1500);
 }
 
-
-/** @param {NS} ns **/
-async function ReadServers(ns: NS): Promise<void> {
-	let aux = "";
-
-	aux = await ns.read('server_list.txt');
-	server_list = aux.split(',');
-
-	aux = await ns.read('target_servers.txt');
-	target_servers = aux.split(',');
-
-	aux = await ns.read('attack_servers.txt');
-	attack_servers = aux.split(',');
-
-}
-
-
-/** @param {NS} ns **/
+/**
+ * Kills all scripts except controller.js
+ * @param ns bitburner variable
+ */
 async function killAllScripts(ns: NS): Promise<void> {
+	const active_scripts = ns.ps();
+	for (let index = 0; index < active_scripts.length; index++) {
+		if (active_scripts[index].filename != 'controller.js')
+			ns.kill(active_scripts[index].pid);
+	}
 	return;
 }
