@@ -7,12 +7,11 @@
 import { NS } from '@ns'
 
 // Declare variables
-let server_list: string[] = ['home'];
+/* let server_list: string[] = ['home'];
 let target_servers: string[] = [];
-let attack_servers: string[] = [];
+let attack_servers: string[] = []; */
 
-/** @param {NS} ns **/
-export async function main(ns: NS): Promise<void> {
+/* export async function main(ns: NS): Promise<void> {
 	// Initialize variables
 	server_list = ['home'];
 	target_servers = [];
@@ -41,12 +40,12 @@ export async function main(ns: NS): Promise<void> {
 
 	ns.tprint("Spider successfully run.")
 
-}
+} */
 
 /**
  * @param {*} ns bitburner stuff
  */
-async function debug(ns: NS): Promise<void> {
+/* async function debug(ns: NS): Promise<void> {
 	let temp_array;
 
 	ns.tprint(server_list.toString());
@@ -59,7 +58,7 @@ async function debug(ns: NS): Promise<void> {
 	ns.tprint("attack_servers: \n" + temp_array + "\n\n");
 	temp_array = await ns.read('target_servers.txt');
 	ns.tprint("target_servers: \n" + temp_array + "\n\n");
-}
+} */
 
 /**
  * Recursive funcion scanning the network for all servers
@@ -68,7 +67,7 @@ async function debug(ns: NS): Promise<void> {
  * @param {*} target target of the scan command
  * @param {*} origin server from which we call the scan command
  */
-async function ScanServers(ns: NS, target: string, origin: string): Promise<void> {
+/* async function ScanServers(ns: NS, target: string, origin: string): Promise<void> {
 	const servers = ns.scan(target);
 
 	for (const id in servers) {
@@ -80,7 +79,7 @@ async function ScanServers(ns: NS, target: string, origin: string): Promise<void
 		}
 	}
 
-}
+} */
 
 /**
  * Categorizes servers bases on wether their maxMoney is 0 or not.
@@ -89,7 +88,7 @@ async function ScanServers(ns: NS, target: string, origin: string): Promise<void
  * @param {*} ns bitburner stuff
  * @param {*} servers server array to categorize
  */
-async function CategorizeServers(ns: NS, servers: string[]): Promise<void> {
+/* async function CategorizeServers(ns: NS, servers: string[]): Promise<void> {
 	for (const id in servers) {
 		if (ns.getServerMaxMoney(servers[id]) == 0) {
 			attack_servers.push(servers[id]);
@@ -97,7 +96,7 @@ async function CategorizeServers(ns: NS, servers: string[]): Promise<void> {
 			target_servers.push(servers[id]);
 		}
 	}
-}
+} */
 
 /**
  * Crawls the web and stores the names of the servers it founds.
@@ -132,6 +131,7 @@ export class Spider {
 	 * Scans the network and organizes the servers.
 	 */
 	public async scan(): Promise<void> {
+    // Reset the variables
 		Spider.server_list = ["home"];
 		Spider.target_servers = [];
 		Spider.attack_servers = [];
