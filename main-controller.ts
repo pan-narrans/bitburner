@@ -52,7 +52,7 @@ async function runScript(ns: NS, script_name: string, script_location: string = 
 async function killAllScripts(ns: NS): Promise<void> {
   const active_scripts = ns.ps();
   for (let index = 0; index < active_scripts.length; index++) {
-    if (active_scripts[index].filename != 'controller.js')
+    if (active_scripts[index].filename != 'main-controller.js')
       ns.kill(active_scripts[index].pid);
   }
   return;

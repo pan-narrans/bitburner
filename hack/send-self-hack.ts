@@ -24,8 +24,8 @@ export async function main(ns: NS): Promise<void> {
 async function CalcThreads(ns: NS): Promise<void> {
 	const script_ram = ns.getScriptRam(hack_script);
 	const home_ram = ns.getServerMaxRam('home');
-	// var expected_scripts = servers_to_hack.length + 1;
-	const expected_scripts = 20;
+	const expected_scripts = servers_to_hack.length + 1;
+	// const expected_scripts = 20;
 
 	threads_on_home = Math.floor(home_ram / (expected_scripts * script_ram));
 	threads_on_home = (threads_on_home == 0) ? 1 : threads_on_home;
