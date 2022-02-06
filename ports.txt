@@ -1,2 +1,0 @@
-
-    const MONEY_PORT: NetscriptPort = ns.getPortHandle(1);

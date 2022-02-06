@@ -1,0 +1,16 @@
+/GENERAL
+    exploit files
+    spider
+    watcher
+
+/HACK
+    controller
+    hack-scripts
+    hack
+
+/HACKNET -- current focus
+    controller
+    upgrader
+    seller
+
+controller

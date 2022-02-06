@@ -1,11 +1,27 @@
+import { NodeStats } from "/../NetscriptDefinitions";
+import { NodeUpgrader } from "/hacknet/upgrade-nodes";
 
 
 
 
 export async function main(ns: NS): Promise<void> {
-	let x: number;
+
+	// necesitamos comprar antes un nodo para poder comprobarlo
+	const hasSourceFile9: boolean = await checkSF9(ns);
+	const upgrader = new NodeUpgrader(ns);
+
+	await upgrader.upgradeCheapest();
+
 }
 
+async function checkSF9(ns: NS) {
+	try {
+		ns.tprint(ns.hacknet.getNodeStats(0).hashCapacity);
+		return true;
+	} catch (error) {
+		return false;
+	}
+}
 
 
 

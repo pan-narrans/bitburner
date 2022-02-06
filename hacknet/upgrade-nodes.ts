@@ -13,40 +13,23 @@ import { NetscriptPort, NS } from '@ns'
 /* function upgradeInfo(node_index: number, upgrade_name: string, upgrade_value: number) {
     this.node = node_index;
     this.upgrade = upgrade_name;
-    this.upgradeValue = upgrade_value;
+    this.value = upgrade_value;
 
     this.setNode = function (node_index) {
         node = node_index;
     }
 } */
 
-export async function main(ns: NS): Promise<void> {
+/* export async function main(ns: NS): Promise<void> {
     const MONEY_PORT: NetscriptPort = ns.getPortHandle(1);
-    let moneyPerS = 0;
+    const moneyPerS = 0;
 
-    do {
-        if (!MONEY_PORT.empty())
-            moneyPerS = +MONEY_PORT.read();
-
-        // if cost server < moneypers * 3600 * 5
-        // buy
-        // continue
-
-        // look for cheapest upgrade from all servers
-        void lookForCheapestUpgrade(ns);
-
-        // if cost upgrade < moneypers * 3600 * 1
-        // buy
-        // continue
-
-    } while (true);
 }
 
 async function lookForCheapestUpgrade(ns: NS): Promise<void> {
     // get all servers
-    const num_nodes = ns.hacknet.numNodes();
-    const cheapestUpgrade = { node: 0, upgrade: "", upgradeValue: 0 };
-    //const cheapestUpgrade = upgradeInfo(0, "", 0);
+    const num_nodes = NodeUpgrader.ns.hacknet.numNodes();
+    const cheapestUpgrade = { uNode: 0, upgrade: "", uValue: 0 };
     const n_upgrades = 1;
 
 
@@ -56,25 +39,93 @@ async function lookForCheapestUpgrade(ns: NS): Promise<void> {
     for (let node_index = 0; node_index < num_nodes; node_index++) {
         let auxValue: number;
 
-        auxValue = ns.hacknet.getLevelUpgradeCost(node_index, n_upgrades);
-        if (auxValue < cheapestUpgrade.upgradeValue) {
-            cheapestUpgrade.node = node_index;
-            cheapestUpgrade.upgradeValue = auxValue;
+        auxValue = NodeUpgrader.ns.hacknet.getLevelUpgradeCost(node_index, n_upgrades);
+        if (auxValue < cheapestUpgrade.uValue) {
+            cheapestUpgrade.uNode = node_index;
+            cheapestUpgrade.uValue = auxValue;
             cheapestUpgrade.upgrade = "LEVEL";
         }
 
-        auxValue = ns.hacknet.getRamUpgradeCost(node_index, n_upgrades);
-        if (auxValue < cheapestUpgrade.upgradeValue) {
-            cheapestUpgrade.node = node_index;
-            cheapestUpgrade.upgradeValue = auxValue;
+        auxValue = NodeUpgrader.ns.hacknet.getRamUpgradeCost(node_index, n_upgrades);
+        if (auxValue < cheapestUpgrade.uValue) {
+            cheapestUpgrade.uNode = node_index;
+            cheapestUpgrade.uValue = auxValue;
             cheapestUpgrade.upgrade = "RAM";
         }
 
-        auxValue = ns.hacknet.getCoreUpgradeCost(node_index, n_upgrades);
-        if (auxValue < cheapestUpgrade.upgradeValue) {
-            cheapestUpgrade.node = node_index;
-            cheapestUpgrade.upgradeValue = auxValue;
+        auxValue = NodeUpgrader.ns.hacknet.getCoreUpgradeCost(node_index, n_upgrades);
+        if (auxValue < cheapestUpgrade.uValue) {
+            cheapestUpgrade.uNode = node_index;
+            cheapestUpgrade.uValue = auxValue;
             cheapestUpgrade.upgrade = "CORE";
         }
     }
+
+    NodeUpgrader.ns.tprint(cheapestUpgrade);
+
+} */
+
+export class NodeUpgrader {
+  protected static ns: NS;
+  constructor(ns: NS) {
+    NodeUpgrader.ns = ns;
+  }
+
+  public async upgrade(): Promise<void> {
+    //choose type of upgrade based on game progress
+    void this.upgradeCheapest();
+  }
+
+  public async upgradeCheapest(): Promise<void> {
+    // search cheapest upgrade
+    const n_upgrades = 1
+    const num_nodes = NodeUpgrader.ns.hacknet.numNodes();
+    let currentvalue: number;
+
+    const chosenUpgrade = { uNode: 0, uName: "LEVEL", uValue: 0 };
+    chosenUpgrade.uValue = NodeUpgrader.ns.hacknet.getLevelUpgradeCost(0, n_upgrades);
+
+    //cheapest = NodeUpgrader.ns.hacknet.getLevelUpgradeCost(0, 1);
+
+    for (let node_index = 0; node_index < num_nodes; node_index++) {
+      currentvalue = NodeUpgrader.ns.hacknet.getLevelUpgradeCost(node_index, n_upgrades);
+      if (currentvalue < chosenUpgrade.uValue) {
+        chosenUpgrade.uNode = node_index;
+        chosenUpgrade.uValue = currentvalue;
+        chosenUpgrade.uName = "LEVEL";
+      }
+
+      currentvalue = NodeUpgrader.ns.hacknet.getRamUpgradeCost(node_index, n_upgrades);
+      if (currentvalue < chosenUpgrade.uValue) {
+        chosenUpgrade.uNode = node_index;
+        chosenUpgrade.uValue = currentvalue;
+        chosenUpgrade.uName = "RAM";
+      }
+
+      currentvalue = NodeUpgrader.ns.hacknet.getCoreUpgradeCost(node_index, n_upgrades);
+      if (currentvalue < chosenUpgrade.uValue) {
+        chosenUpgrade.uNode = node_index;
+        chosenUpgrade.uValue = currentvalue;
+        chosenUpgrade.uName = "CORE";
+      }
+    }
+
+    NodeUpgrader.ns.tprint(chosenUpgrade);
+
+    // buy upgrade
+    switch (chosenUpgrade.uName) {
+      case "LEVEL":
+        NodeUpgrader.ns.hacknet.upgradeLevel(chosenUpgrade.uNode, n_upgrades);
+        break;
+      case "RAM":
+        NodeUpgrader.ns.hacknet.upgradeRam(chosenUpgrade.uNode, n_upgrades);
+        break;
+      case "CORE":
+        NodeUpgrader.ns.hacknet.upgradeCore(chosenUpgrade.uNode, n_upgrades);
+        break;
+      default:
+        break;
+    }
+  }
+
 }
