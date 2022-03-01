@@ -6,7 +6,7 @@ export async function main(ns) {
     var maxSharePer = 1.00
     var stockBuyPer = 0.60
     var stockVolPer = 0.05
-    var moneyKeep = 100000000
+    var moneyKeep = 500000000
     var minSharePer = 5
 
     while (true) {

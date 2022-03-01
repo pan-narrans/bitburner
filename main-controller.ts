@@ -1,6 +1,6 @@
 import { NS } from '@ns'
 import { Spider } from 'spider'
-
+ 
 export async function main(ns: NS): Promise<void> {
 
 

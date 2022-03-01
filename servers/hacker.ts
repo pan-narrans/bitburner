@@ -1,5 +1,65 @@
+import { NS } from '@ns'
+import { Server } from '@ns'
 
-import { Spider } from 'spider'
+/* export async function main(ns : NS) : Promise<void> {
+  //
+}
+ */
+
+export class Hacker {
+  private ns: NS;
+
+  constructor(ns: NS) {
+    this.ns = ns;
+  }
+
+  private CalcThreads(hack_script: string): number {
+    let threads_on_home: number;
+    const script_ram = this.ns.getScriptRam(hack_script);
+    const home_ram = this.ns.getServerMaxRam('home');
+    // const expected_scripts = servers_to_hack.length + 1;
+    const expected_scripts = 20;
+
+    threads_on_home = Math.floor(home_ram / (expected_scripts * script_ram));
+    threads_on_home = (threads_on_home == 0) ? 1 : threads_on_home;
+
+    return threads_on_home;
+  }
+
+  private selfHack(target: Server, hack_script: string): bool {
+
+    this.ns.print("Trying to hack " + target.hostname + "... \n");
+
+    if (this.ns.getHackingLevel() >= this.ns.getServerRequiredHackingLevel(target.hostname)) {
+    
+      const script_ram = this.ns.getScriptRam(hack_script);
+      const max_ram = this.ns.getServerMaxRam(target.hostname);
+      let threads = Math.floor(max_ram / script_ram);
+
+      const min_security = this.ns.getServerMinSecurityLevel(target.hostname);
+      const max_money = this.ns.getServerMaxMoney(target.hostname);
+
+      // Upload hack script
+      await this.ns.scp(hack_script, target.hostname);
+
+      // Calculate threads, -1 accounts for float to in conversion
+      threads = (threads > 1) ? threads - 1 : 1;
+
+      this.ns.tprint("Hacking " + target.hostname + "... \n");
+      this.ns.killall(target.hostname);
+
+      // Run script on target
+      this.ns.exec(hack_script, target.hostname, threads, target.hostname, min_security, max_money);
+
+      return true;
+    }
+
+    return false;
+  }
+}
+
+
+/* import { Spider } from 'spider'
 
 let servers_to_hack: string[] = [];
 const hack_script = '/hack/basic-hack-template.js';
@@ -105,4 +165,4 @@ async function CrackServer(ns: NS, target: string) {
   }
 
   return false;
-}
+} */

@@ -8,4 +8,4 @@ export async function main(ns: NS): Promise<void> {
         ns.hacknet.spendHashes("Sell for Money");
         await ns.sleep(10);
     }
-}
+} 

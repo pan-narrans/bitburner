@@ -2,7 +2,7 @@ import { NodeStats } from "/../NetscriptDefinitions";
 import { NodeUpgrader } from "/hacknet/upgrade-nodes";
 
 
-
+ 
 
 export async function main(ns: NS): Promise<void> {
 

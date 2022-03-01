@@ -1,9 +1,10 @@
-
+ 
 export async function main(ns: NS): Promise<void> {
 
 	const server_name: string = ns.args[0];
 	const min_security = ns.args[1];
 	const max_money = ns.args[2];
+  
 	let server_security: number;
 	let server_money: number;
 

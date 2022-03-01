@@ -1,5 +1,5 @@
 import { NetscriptPort, NS } from '@ns'
-
+ 
 /*
 * get a way of assesing how much revenue we get from hacknet nodes per second
 * 
