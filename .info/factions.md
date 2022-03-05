@@ -96,18 +96,18 @@ Other:
 
 # Companies
 
-|                                                  Name | City      |       |              Aug type | Requisites                                      |
-| ----------------------------------------------------: | --------- | :---: | --------------------: | ----------------------------------------------- |
-|                              **Bachman & Associates** | Aevum     |   -   |    hack <br> charisma | 200k rep                                        |
-|                                       **Clarke Inc.** | Aevum     |   -   |                     - | 200k rep                                        |
-|                                             **ECorp** | Aevum     |   -   |  **hack** <br> combat | 200k rep                                        |
-|                                     **Fulcrum Tech.** | Aevum     |   -   |      hack <br> combat | 200k rep <br> install backdoor on fulcrumassets |
-| **[KuaiGong International](#kuaigong-international)** | Chongqing |   -   |  **combat** <br> hack | 200k rep                                        |
-|                                  **Blade Industries** | Sector-12 |   -   |                     - | 200k rep                                        |
-|                         **[Four Sigma](#four-sigma)** | Sector-12 |   -   |     **rep** <br> hack | 200k rep                                        |
-|                             **[Megacorp](#megacorp)** | Sector-12 |   -   |  **hack** <br> combat | 200k rep                                        |
-|                                               **NWO** | Volhaven  |   -   | **hack** <br> general | 200k rep                                        |
-|                                      **OmniTek Inc.** | Volhaven  |   -   |                combat | 200k rep                                        |
+|                                                  Name | City      |       |               Aug type | Requisites                                      |
+| ----------------------------------------------------: | --------- | :---: | ---------------------: | ----------------------------------------------- |
+|                              **Bachman & Associates** | Aevum     |   -   |     hack <br> charisma | 200k rep                                        |
+|                                       **Clarke Inc.** | Aevum     |   -   | **hack** <br> charisma | 200k rep                                        |
+|                                             **ECorp** | Aevum     |   -   |   **hack** <br> combat | 200k rep                                        |
+|                                     **Fulcrum Tech.** | Aevum     |   -   |       hack <br> combat | 200k rep <br> install backdoor on fulcrumassets |
+| **[KuaiGong International](#kuaigong-international)** | Chongqing |   -   |   **combat** <br> hack | 200k rep                                        |
+|                                  **Blade Industries** | Sector-12 |   -   |                      - | 200k rep                                        |
+|                         **[Four Sigma](#four-sigma)** | Sector-12 |   -   |      **rep** <br> hack | 200k rep                                        |
+|                             **[Megacorp](#megacorp)** | Sector-12 |   -   |   **hack** <br> combat | 200k rep                                        |
+|                                               **NWO** | Volhaven  |   -   |  **hack** <br> general | 200k rep                                        |
+|                                      **OmniTek Inc.** | Volhaven  |   -   |                 combat | 200k rep                                        |
 
 
 ## KuaiGong International
